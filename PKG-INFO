@@ -1,0 +1,11 @@
+Metadata-Version: 1.1
+Name: looptimer
+Version: 1.0.0 
+Author: Bryan Johnson
+Author-email: d bryan johnson at gmail com
+Home-page: https://github.com/dbjohnson/looptimer
+Download-url: https://github.com/dbjohnson/looptimer/tarball/0.1
+Summary: Progress bar style loop timer with projected time-to-completion
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
