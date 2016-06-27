@@ -61,7 +61,7 @@ class LoopTimer:
             completed=self.iterations_elapsed,
             total=self.total_iterations,
             elapsed=elapsed,
-            tgo='' if pct_complete >= 100 else '; ~{tgo} remaining'.format(tgo=tgo))
+            tgo='; ~{} remaining'.format(tgo) if pct_complete < 100 else '')
 
         padding = self.last_printed_width - len(status)
         if padding > 0:
@@ -69,6 +69,9 @@ class LoopTimer:
 
         self.last_printed_width = len(status)
         sys.stdout.write(u'\r{}'.format(status))
+        if pct_complete >= 100:
+            sys.stdout.write('\n')
+
         sys.stdout.flush()
 
     def __seconds_per_iteration(self):
