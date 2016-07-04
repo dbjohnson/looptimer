@@ -17,9 +17,10 @@ class LoopTimer:
         total_iterations (int): number of loop iterations
 
     Keyword Args:
-        label (str): descriptive label, printed to the left of the progress bar
-        bar_char (str): character used to fill in the progress bar (default u'█')
-        bar_width (int): progress bar width in characters (default 20)
+        label (str, default None): descriptive label, printed to the left of the progress bar
+        bar_char (str, default u'█'): character used to fill in the progress bar
+        bar_width (int, default 20): progress bar width in characters
+        animate (bool, default True): disable to print each update on a new line (useful when interspersed with other log messages)
 
     Usage:
     t = LoopTimer(...)
@@ -30,7 +31,8 @@ class LoopTimer:
     """
     def __init__(self, total_iterations, label=None,
                  bar_char=DEFAULT_BAR_CHAR,
-                 bar_width=DEFAULT_BAR_WIDTH):
+                 bar_width=DEFAULT_BAR_WIDTH,
+                 animate=True):
         self.total_iterations = total_iterations
         self.iterations_elapsed = 0
         self.label = label
@@ -38,6 +40,7 @@ class LoopTimer:
         self.last_printed_width = 0
         self.bar_char = bar_char
         self.bar_width = bar_width
+        self.animate = animate
 
     def tick(self):
         self.iterations_elapsed += 1
@@ -63,14 +66,18 @@ class LoopTimer:
             elapsed=elapsed,
             tgo='; ~{} remaining'.format(tgo) if pct_complete < 100 else '')
 
-        padding = self.last_printed_width - len(status)
-        if padding > 0:
-            status += u' ' * padding
+        if self.animate:
+            # back up to beginning of line and make sure to overwrite the previous message
+            padding = self.last_printed_width - len(status)
+            if padding > 0:
+                status += u' ' * padding
 
-        self.last_printed_width = len(status)
-        sys.stdout.write(u'\r{}'.format(status))
-        if pct_complete >= 100:
-            sys.stdout.write('\n')
+            self.last_printed_width = len(status)
+            sys.stdout.write(u'\r{}'.format(status))
+            if pct_complete >= 100:
+                sys.stdout.write('\n')
+        else:
+            sys.stdout.write(u'{}\n'.format(status))
 
         sys.stdout.flush()
 
@@ -83,7 +90,8 @@ class LoopTimer:
 
 def timedloop(iterable, label=None,
               bar_char=DEFAULT_BAR_CHAR,
-              bar_width=DEFAULT_BAR_WIDTH):
+              bar_width=DEFAULT_BAR_WIDTH,
+              animate=True):
     """
     Iteration timer - directly wraps any iterable.
     Measures iteration progress and provides estimated time to completion by
@@ -94,12 +102,13 @@ def timedloop(iterable, label=None,
         iterable (iterable): iterable sequence
 
     Keyword Args:
-        label (str): descriptive label, printed to the left of the progress bar
-        bar_char (str): character used to fill in the progress bar (default u'█')
-        bar_width (int): progress bar width in characters (default 20)
+        label (str, default None): descriptive label, printed to the left of the progress bar
+        bar_char (str, default u'█'): character used to fill in the progress bar
+        bar_width (int, default 20): progress bar width in characters
+        animate (bool, default True): disable to print each update on a new line (useful when interspersed with other log messages)
 
     """
-    t = LoopTimer(len(iterable), label=label, bar_char=bar_char, bar_width=bar_width)
+    t = LoopTimer(len(iterable), label=label, bar_char=bar_char, bar_width=bar_width, animate=animate)
     for i in iterable:
         yield
         t.tick()
