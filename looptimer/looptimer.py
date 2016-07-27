@@ -110,7 +110,7 @@ def timedloop(iterable, label=None,
     """
     t = LoopTimer(len(iterable), label=label, bar_char=bar_char, bar_width=bar_width, animate=animate)
     for i in iterable:
-        yield
+        yield i
         t.tick()
 
 
