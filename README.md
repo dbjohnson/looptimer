@@ -4,7 +4,6 @@ Progress bar style loop timer with projected time-to-completion.
 
 [![License](https://img.shields.io/github/license/dbjohnson/looptimer.svg)]()
 [![PyPi](https://img.shields.io/pypi/v/looptimer.svg)](https://pypi.python.org/pypi/looptimer)
-[![PyPi](https://img.shields.io/pypi/dm/looptimer.svg)](https://pypi.python.org/pypi/looptimer)
 [![Code Climate](https://codeclimate.com/github/dbjohnson/looptimer/badges/gpa.svg)](https://codeclimate.com/github/dbjohnson/looptimer)
 
 ## Installation
@@ -21,7 +20,7 @@ for _ in timedloop(range(100), label='foo'):
 ```
 
 ### Sample output
-![](demo.png)
+![](demo.gif)
 
 ### Optional arguments
 
