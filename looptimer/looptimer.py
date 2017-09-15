@@ -21,6 +21,7 @@ class LoopTimer:
         bar_char (str, default u'█'): character used to fill in the progress bar
         bar_width (int, default 20): progress bar width in characters
         animate (bool, default True): disable to print each update on a new line (useful when interspersed with other log messages)
+        max_refresh_secs (float, default 0.1): use to throttle update frequency for fast loops
 
     Usage:
     t = LoopTimer(...)
@@ -29,10 +30,13 @@ class LoopTimer:
         t.tick()
 
     """
-    def __init__(self, total_iterations, label=None,
-                 bar_char=DEFAULT_BAR_CHAR,
-                 bar_width=DEFAULT_BAR_WIDTH,
-                 animate=True):
+    def __init__(
+        self, total_iterations, label=None,
+        bar_char=DEFAULT_BAR_CHAR,
+        bar_width=DEFAULT_BAR_WIDTH,
+        animate=True,
+        max_refresh_secs=0.1
+    ):
         self.total_iterations = total_iterations
         self.iterations_elapsed = 0
         self.label = label
@@ -41,6 +45,7 @@ class LoopTimer:
         self.bar_char = bar_char
         self.bar_width = bar_width
         self.animate = animate
+        self.max_refresh_secs = max_refresh_secs
 
     def tick(self):
         self.iterations_elapsed += 1
@@ -50,7 +55,12 @@ class LoopTimer:
         return (100. * self.iterations_elapsed) / self.total_iterations
 
     def __print_status(self):
-        secs_elapsed = time.time() - self.start_time
+        if self.max_refresh_secs and time.time() - self.last_update_time < self.max_refresh_secs:
+            if self.iterations_elapsed < self.total_iterations:
+                return
+
+        self.last_update_time = time.time()
+        secs_elapsed = self.last_update_time - self.start_time
         pct_complete = self.pct_complete()
         completed_bar_width = int(pct_complete * self.bar_width / 100)
         tgo_bar_width = self.bar_width - completed_bar_width
@@ -88,10 +98,13 @@ class LoopTimer:
         return self.__seconds_per_iteration() * (self.total_iterations - self.iterations_elapsed)
 
 
-def timedloop(iterable, label=None,
-              bar_char=DEFAULT_BAR_CHAR,
-              bar_width=DEFAULT_BAR_WIDTH,
-              animate=True):
+def timedloop(
+    iterable, label=None,
+    bar_char=DEFAULT_BAR_CHAR,
+    bar_width=DEFAULT_BAR_WIDTH,
+    animate=True,
+    max_refresh_secs=0.1
+):
     """
     Iteration timer - directly wraps any iterable.
     Measures iteration progress and provides estimated time to completion by
@@ -106,9 +119,10 @@ def timedloop(iterable, label=None,
         bar_char (str, default u'█'): character used to fill in the progress bar
         bar_width (int, default 20): progress bar width in characters
         animate (bool, default True): disable to print each update on a new line (useful when interspersed with other log messages)
+        max_refresh_secs (float, default 0.1): use to throttle update frequency for fast loops
 
     """
-    t = LoopTimer(len(iterable), label=label, bar_char=bar_char, bar_width=bar_width, animate=animate)
+    t = LoopTimer(len(iterable), label=label, bar_char=bar_char, bar_width=bar_width, animate=animate, max_refresh_secs=max_refresh_secs)
     for i in iterable:
         yield i
         t.tick()
