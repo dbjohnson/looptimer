@@ -100,8 +100,8 @@ class LoopTimer:
 
 def timedloop(
     iterable,
-    total=None,
     label=None,
+    total=None,
     bar_char=DEFAULT_BAR_CHAR,
     bar_width=DEFAULT_BAR_WIDTH,
     animate=True,
@@ -117,8 +117,8 @@ def timedloop(
         iterable (iterable): iterable sequence
 
     Keyword Args:
-        total (int, default None): total number iterations; if not provided, checking iterable length will be attempted
         label (str, default None): descriptive label, printed to the left of the progress bar
+        total (int, default None): total number iterations; if not provided, checking iterable length will be attempted
         bar_char (str, default u'█'): character used to fill in the progress bar
         bar_width (int, default 20): progress bar width in characters
         animate (bool, default True): disable to print each update on a new line (useful when interspersed with other log messages)
