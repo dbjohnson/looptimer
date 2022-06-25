@@ -2,7 +2,7 @@ import unittest
 import contextlib
 import sys
 import time
-from StringIO import StringIO
+from io import StringIO
 
 from looptimer import timedloop
 
@@ -34,7 +34,7 @@ class TestLoopTimer(unittest.TestCase):
                     u'']
 
         with capture() as c:
-            for _ in timedloop(xrange(10), bar_char='x', animate=False):
+            for _ in timedloop(range(10), bar_char='x', animate=False):
                 time.sleep(0.2)
         captured = c.getvalue().split('\n')
 
