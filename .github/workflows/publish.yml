@@ -1,11 +1,7 @@
-name: Publish package
+name: publish to pypi
 on:
   push:
     branches: [ main ]
-uses: pypa/gh-action-pypi-publish@release/v1
-environment: pypi
-with:
-  password: ${{ secrets.PYPI_API_TOKEN }}
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -39,3 +35,6 @@ jobs:
           pytest
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
+        environment: pypi
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
