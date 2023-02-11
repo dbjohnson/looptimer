@@ -5,6 +5,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    environment: pypi
     strategy:
       matrix:
         python-version: ["3.9"]
@@ -35,6 +36,5 @@ jobs:
           pytest
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
-        environment: pypi
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
