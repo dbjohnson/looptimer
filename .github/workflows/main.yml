@@ -16,8 +16,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest build twine
-          python -m build
+          pip install flake8 pytest pip-tools
+          pip-tools compile
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Lint with flake8
         run: |
