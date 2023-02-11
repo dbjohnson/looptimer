@@ -4,7 +4,7 @@ Progress bar style loop timer with projected time-to-completion.
 
 [![License](https://img.shields.io/github/license/dbjohnson/looptimer.svg)]()
 [![PyPi](https://img.shields.io/pypi/v/looptimer.svg)](https://pypi.python.org/pypi/looptimer)
-[![Code Climate](https://codeclimate.com/github/dbjohnson/looptimer/badges/gpa.svg)](https://codeclimate.com/github/dbjohnson/looptimer)
+![GHA](https://github.com/dbjohnson/looptimer/actions/workflows/main.yml/badge.svg)
 
 ## Installation
 ```pip install looptimer```
